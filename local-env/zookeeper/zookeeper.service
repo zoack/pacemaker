@@ -1,0 +1,22 @@
+[Unit]
+Description=Zookeeper Daemon
+Documentation=http://zookeeper.apache.org
+Requires=network.target
+After=network.target
+
+[Service]
+Environment=ZOO_LOG_DIR="/var/log/zookeeper"
+Environment=ZOO_LOG4J_PROP="INFO,CONSOLE,ROLLINGFILE"
+Type=simple
+WorkingDirectory=/usr/share/zookeeper
+User=zookeeper
+Group=zookeeper
+ExecStart=/usr/share/zookeeper/bin/zkServer.sh start-foreground /usr/share/zookeeper/conf/zoo.cfg
+ExecStop=/usr/share/zookeeper/bin/zkServer.sh stop /usr/share/zookeeper/conf/zoo.cfg
+ExecReload=/usr/share/zookeeper/bin/zkServer.sh restart /usr/share/zookeeper/conf/zoo.cfg
+TimeoutSec=30
+Restart=on-failure
+SuccessExitStatus=143
+
+[Install]
+WantedBy=default.target

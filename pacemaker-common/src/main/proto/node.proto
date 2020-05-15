@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package pacemaker;
+
+import "google/protobuf/any.proto";
+import "status.proto";
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.models";
+option java_outer_classname = "NodeProtos";
+
+message Node {
+    enum Type {
+        Mesos = 0;
+        Kubernetes = 1;
+    }
+
+    string id = 1;
+    Type type = 2;
+    string name = 3;
+    string user = 4;
+    string principal = 5;
+    repeated string role = 6;
+
+    //TODO where does domain belong?
+    string domain = 7;
+
+    FrameworkStatus status = 8;
+    FrameworkStatus.State desiredState = 9;
+
+    google.protobuf.Any extension = 20;
+}
+
+
+

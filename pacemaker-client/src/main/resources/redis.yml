@@ -1,0 +1,44 @@
+---
+deployments:
+  id: "9fb285aa-64e2-49f4-956a-b127b9e35abd"
+  principal: "principalo"
+  role: "devo"
+  strategy: "PARALLEL"
+  failureStrategy: "FAIL_FAST"
+  tasks:
+    - id: "5cf61bea-7386-4451-8398-76c5b94c2b63"
+      name: "redis"
+      networks:
+        - "pacemaker"
+      desiredState: "Running"
+      workload: "STATELESS"
+      retryPolicy:
+        maxAttempts: 5
+        multiplier: 2
+        intervalInMs: 5000
+      containers:
+        id: "ae7bf0f3-8911-46ac-b183-e603b48f31df"
+        name: "server"
+        internalName: "redis-server-ae7bf0f3"
+        image: "library/redis"
+        force: true
+        startUpProbe:
+          tcpSocket:
+            port: 6379
+        variables:
+          key : "KEY"
+          value: "VALUE"
+        resources:
+          cpus: 1.0
+          memory: 128
+          ports:
+            - 9000
+          diks:
+            id: "1922c90e-56df-48e9-8ce0-6828cae0ea5c"
+            size: 100
+            persistent: true
+            type: "PATH"
+            volume:
+              destinationPath: "edu2"
+      extension:
+        docker: true

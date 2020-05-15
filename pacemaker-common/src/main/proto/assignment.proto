@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package pacemaker;
+
+import "resources.proto";
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.models";
+import "google/protobuf/any.proto";
+option java_outer_classname = "AssignmentProtos";
+
+message Assignment{
+    string frameworkId = 1;
+    string agentId = 2;
+    string role = 3;
+    string principal = 4;
+    Resources resources = 5;
+    string host = 6;
+    repeated string ips = 7;
+    repeated string dnsDomain = 8;
+
+    google.protobuf.Any extension = 9;
+
+}

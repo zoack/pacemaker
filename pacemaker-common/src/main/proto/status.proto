@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package pacemaker;
+
+import "google/protobuf/timestamp.proto";
+import "error.proto";
+import "probe.proto";
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.models";
+option java_outer_classname = "StatusProtos";
+
+
+
+message World {
+    string frameworkID = 1;
+    FrameworkStatus frameworkStatus = 2;
+    map<string, TaskStatus> tasks = 3;
+    map<string, ProbeResult> containerProbes = 4;
+    //TODO model virtual map of nodes
+    map<string, string> nodes = 5;
+}
+
+
+
+message FrameworkStatus {
+    enum State {
+        Inactive = 0;
+        Active = 1;
+        Failed = 2;
+    }
+
+    State state = 1;
+    Error error = 2;
+    bool stopping = 3;
+    bool starting = 4;
+
+    google.protobuf.Timestamp lastProbeTime = 5;
+    google.protobuf.Timestamp lastTransition = 6;
+}
+
+message DeploymentStatus {
+    enum State {
+        NoService = 0;
+        Warning = 1;
+        OK = 2;
+    }
+
+    State state = 1;
+}
+
+
+
+message TaskStatus {
+    enum State {
+        Pending = 0;
+        Scheduling = 1;
+        Running = 2;
+        Unassigning = 3;
+        Killing  = 4;
+        Finished = 5;
+        Failed = 6;
+        Lost = 7;
+    }
+
+    State state = 1;
+    bool initialized = 3;
+    bool unassigned = 4;
+
+    Error error = 7;
+
+    google.protobuf.Timestamp lastProbeTime = 8;
+    google.protobuf.Timestamp lastTransition = 9;
+}
+
+message ContainerStatus {
+    enum State {
+        Pending = 0;
+        Running = 1;
+        Lost = 2;
+        Finished = 3;
+        Failed = 4;
+    }
+
+    ProbeResult lastProbe = 1;
+    uint32 consecutiveFailures = 2;
+    bool initialized = 3;
+    bool ready = 4;
+
+    uint64 retriesCount = 6;
+    google.protobuf.Timestamp lastTransition = 8;
+
+    Error error = 9;
+}
+
+

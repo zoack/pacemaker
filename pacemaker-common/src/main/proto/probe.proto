@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package pacemaker;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+import "error.proto";
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.models";
+option java_outer_classname = "ProbeProtos";
+
+message Probe {
+    enum Type {
+        Tcp = 0;
+        Http = 1;
+
+    }
+
+    message TCPSocket {
+        string host = 1;
+        uint32 port = 2;
+    }
+
+    message HttpRequest {
+        string host = 1;
+        uint32 port = 2;
+        string protocol = 3;
+        string path = 4;
+        string method = 5;
+        map<string,string> headers = 6;
+    }
+
+    oneof probe {
+        TCPSocket tcpSocket = 1;
+        HttpRequest httpRequest = 2;
+        google.protobuf.Any extension = 3;
+    }
+    uint32 delayInSecs = 4;
+}
+
+message ProbeResult {
+    enum Result {
+        Success = 0;
+        Failure = 1;
+        Lost = 2;
+    }
+
+    Result result = 1;
+    google.protobuf.Any data = 2;
+    Error error = 3;
+    google.protobuf.Timestamp lastProbeTime = 4;
+
+}
+

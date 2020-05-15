@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.services";
+option java_outer_classname = "DeploymentServiceOuter";
+
+import "deployment.proto";
+
+service DeploymentService {
+    rpc deploy (DeploymentRequest) returns (DeploymentResponse);
+    rpc stop (IDsRequest) returns (DeploymentResponse);
+    rpc start(IDsRequest) returns (DeploymentResponse);
+}
+
+
+message DeploymentRequest {
+    repeated pacemaker.Deployment deployments = 1;
+}
+
+message IDsRequest {
+    repeated string ids = 1;
+}
+
+message DeploymentResponse {
+
+}

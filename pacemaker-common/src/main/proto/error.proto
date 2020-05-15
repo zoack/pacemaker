@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pacemaker;
+
+import "google/protobuf/any.proto";
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.models";
+option java_outer_classname = "ErrorProtos";
+
+
+message Error {
+    string reason = 1;
+    bool fatal = 2;
+    google.protobuf.Any data = 4;
+}

@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package pacemaker;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/any.proto";
+import "resources.proto";
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.models";
+option java_outer_classname = "MesosProtos";
+
+message MesosTask {
+    string executorID = 1;
+
+    Resources executorResources = 3;
+
+    //NOTE @etarascon:
+    //if docker is activated then it will no use mesos LAUNCH_GROUP feature because it is not supported,
+    //therefore the launch will not be atomically. Otherwise it will be launched as a LAUNCH_GROUP (pod in Kubernetes nomenclature)
+    //and each container will be launched as unified mesos container
+    bool docker = 4;
+
+    repeated string labels = 6;
+    google.protobuf.Any extension = 7;
+}
+
+message MesosAssignment {
+    map<string,string> taskIDs = 1;
+    repeated string acceptedOffers = 2;
+}
+
+message MesosFrameworkInfo {
+    //TODO #Robustness we could use mesos protos
+    //import "mesos/mesos.proto"";
+    google.protobuf.FloatValue failoverTimeout = 1;
+    string master = 2;
+    uint32 libprocessPort = 5;
+    repeated string capabilities = 3;
+    repeated string labels = 4;
+}
+
+
+

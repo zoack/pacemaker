@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pacemaker;
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.models";
+option java_outer_classname = "RetryProtos";
+
+
+message RetryPolicy {
+    enum Policy {
+        Interval = 0;
+        ExponentialBackOff = 1;
+    }
+
+    uint64 waitInMs = 1;
+    uint64 intervalInMs = 2;
+    uint32 multiplier = 3;
+    uint32 maxAttempts = 4;
+}

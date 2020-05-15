@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package pacemaker;
+
+import "resources.proto";
+import "status.proto";
+import "assignment.proto";
+import "probe.proto";
+import "retry.proto";
+import "variables.proto";
+import "secrets.proto";
+
+import "google/protobuf/any.proto";
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.models";
+option java_outer_classname = "DeploymentProtos";
+
+
+message Deployment {
+    //TODO IMPLEMENT
+    enum DeploymentStrategy {
+        SERIAL = 0;
+        PARALLEL = 1;
+        RESERVE = 2;
+    }
+
+    //TODO IMPLEMENT
+    enum FailureStrategy {
+        FAIL_FAST = 0;
+        BEST_EFFORT = 1;
+    }
+
+    string id = 1;
+
+    repeated string roles = 2;
+    string principal = 3;
+
+
+    repeated Task tasks = 4;
+    DeploymentStrategy strategy = 5;
+    FailureStrategy failureStrategy = 6;
+    repeated string labels = 7;
+    repeated google.protobuf.Any extension = 9;
+
+    DeploymentStatus status = 8;
+}
+
+
+message Task {
+    string id = 1;
+    enum Workload {
+        STATELESS = 0;
+        STATEFUL = 1;
+        BATCH = 2;
+        ANALYTICAL = 3;
+    }
+
+    string name = 2;
+    string role = 3;
+    string instances = 4;
+    Workload workload = 5;
+    repeated Container containers = 6;
+    //TODO #networkModel
+    repeated string networks = 7;
+
+    repeated string labels = 10;
+    TaskStatus.State desiredState = 11;
+    uint32 attempt = 12;
+    RetryPolicy retryPolicy = 13;
+
+    google.protobuf.Any extension = 20;
+
+    Assignment assignment = 9;
+    pacemaker.TaskStatus status = 8;
+
+}
+
+message Container {
+    string id = 1;
+    string name = 2;
+    string internalName = 3;
+    string image = 4;
+    bool force = 5;
+    Resources resources = 6;
+    repeated Volume volumes = 7;
+
+    Probe startUpProbe = 8;
+    Probe readinessProbe = 9;
+    Probe livenessProbe = 10;
+
+    pacemaker.ContainerStatus status = 11;
+
+    repeated Variable variables = 12;
+    repeated string secrets = 13;
+
+    repeated string labels = 14;
+    google.protobuf.Any extension = 20;
+}

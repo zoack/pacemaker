@@ -1,0 +1,18 @@
+[Unit]
+Description=Mesos-DNS Daemon
+Documentation=https://github.com/mesosphere/mesos-dns/
+Requires=network.target
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/local/mesos-dns
+User=root
+Group=root
+ExecStart=/usr/local/mesos-dns/mesos-dns -config=/usr/local/mesos-dns/config.json -alsologtostderr -log_dir /var/log/mesos-dns -v=1
+TimeoutSec=30
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+

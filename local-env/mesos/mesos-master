@@ -1,0 +1,3 @@
+MESOS_HOSTNAME_LOOKUP=false
+PORT=5050
+ZK=`cat /etc/mesos/zk`

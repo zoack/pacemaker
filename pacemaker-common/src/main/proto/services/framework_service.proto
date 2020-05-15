@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.services";
+option java_outer_classname = "FrameworkServiceOuter";
+
+import "framework.proto";
+
+service FrameworkService {
+    rpc create (FrameworkCreateRequest) returns (FrameworkResponse);
+    rpc start (FrameworkIDsRequest) returns (FrameworkResponse);
+    rpc stop (FrameworkIDsRequest) returns (FrameworkResponse);
+}
+
+
+message FrameworkCreateRequest {
+    repeated pacemaker.FrameworkInfo frameworks = 1;
+}
+
+message FrameworkIDsRequest {
+    repeated string frameworkIds = 1;
+}
+
+message FrameworkResponse {
+
+}

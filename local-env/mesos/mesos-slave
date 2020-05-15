@@ -1,0 +1,2 @@
+MESOS_MASTER=`cat /etc/mesos/zk`
+MASTER=`cat /etc/mesos/zk`

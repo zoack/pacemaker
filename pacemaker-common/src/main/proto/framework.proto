@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package pacemaker;
+
+import "google/protobuf/any.proto";
+import "status.proto";
+import "retry.proto";
+import "deployment.proto";
+
+option java_multiple_files = true;
+option java_package = "org.pacemaker.proto.models";
+option java_outer_classname = "FrameworkProtos";
+
+message FrameworkInfo {
+    enum Type {
+        Mesos = 0;
+        Kubernetes = 1;
+    }
+
+    string id = 1;
+    Type type = 2;
+    string name = 3;
+    string user = 4;
+    string principal = 5;
+    repeated string role = 6;
+
+    //TODO where does domain belong?
+    string domain = 7;
+
+    FrameworkStatus status = 8;
+    FrameworkStatus.State desiredState = 9;
+    uint32 attempt = 10;
+
+    RetryPolicy retryPolicy = 11;
+
+    google.protobuf.Any extension = 20;
+}
+
+message ScheduleAction {
+    enum Action {
+        None = 0;
+        Launch = 1;
+        Kill = 2;
+        CreateVolume = 3;
+        DestroyVolume = 4;
+    }
+    Task task = 1;
+    repeated Action actions = 2;
+    google.protobuf.Any extension = 3;
+}
+
+
